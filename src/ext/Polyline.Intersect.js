@@ -7,7 +7,7 @@ L.Polyline.include({
 	// @method intersects(): boolean
 	// Check to see if this polyline has any linesegments that intersect.
 	// NOTE: does not support detecting intersection for degenerate cases.
-	intersects: function () {
+	intersects: function (isPolygon) {
 		var points = this._getProjectedPoints(),
 			len = points ? points.length : 0,
 			i, p, p1;
@@ -24,6 +24,15 @@ L.Polyline.include({
 			if (this._lineSegmentsIntersectsRange(p, p1, i - 2)) {
 				return true;
 			}
+		}
+
+		if(isPolygon) {
+			var firstPoint = points[0];
+			var lastPoint = points[len - 1];
+			var maxIndex = len - 2;
+
+			// Check the line segment between last and first point. Don't need to check the first line segment (minIndex = 1)
+			return this._lineSegmentsIntersectsRange(lastPoint, firstPoint, maxIndex, 1);
 		}
 
 		return false;

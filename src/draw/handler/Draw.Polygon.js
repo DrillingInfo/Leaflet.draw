@@ -99,7 +99,7 @@ L.Draw.Polygon = L.Draw.Polyline.extend({
 	},
 
 	_shapeIsValid: function () {
-		return this._markers.length >= 3;
+		return this._markers.length >= 3 && (this.options.allowIntersection || !this._poly.intersects(true));
 	},
 
 	_vertexChanged: function (latlng, added) {
